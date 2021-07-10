@@ -1,0 +1,10 @@
+FROM openjdk:8-jdk-alpine
+MAINTAINER Konrad Gebczynski
+ENV app_name target/simple-servlet.jar
+COPY ${app_name} simple-servlet.jar
+COPY AppServerAgent-20.7.0.30639.zip agent.zip
+RUN mkdir agent \
+	&& unzip agent.zip -d /agent \
+	&& rm agent.zip
+EXPOSE 8080
+ENTRYPOINT ["java","-javaagent:/agent/javaagent.jar","-jar","simple-servlet.jar"]
